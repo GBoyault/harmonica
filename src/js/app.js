@@ -13,6 +13,36 @@ const mouthWidth = 40;
 const toleranceX = 5;
 const toleranceY = 20;
 
+const tunings = {
+  richter: {
+    '0': 'silence',
+    '1': 'do',
+    '-1': 'ré',
+    '2': 'mi',
+    '-2': 'sol',
+    '3': 'sol',
+    '-3': 'si',
+    '4': 'do',
+    '-4': 'ré',
+    '5': 'mi',
+    '-5': 'fa',
+    '6': 'sol',
+    '-6': 'la',
+    '-7': 'si',
+    '7': 'do',
+    '-8': 'ré',
+    '8': 'mi',
+    '-9': 'fa',
+    '9': 'sol',
+    '-10': 'la',
+    '10': 'do',
+  }
+}
+
+
+let currentHole = 0;
+let currentNoteCode = 'silence';
+
 if (harmo && holes.length) {
 
   const contactMouth = hole => {
@@ -24,6 +54,19 @@ if (harmo && holes.length) {
       & holeRect.y + holeRect.height < mouthRect.y + mouthRect.height + toleranceY
   }
 
+  const setCurrentNote = air => {
+    if ('blowing' === air) {
+      currentNoteCode = currentHole;
+    } else if ('drawing' === air) {
+      currentNoteCode = currentHole * -1;
+    } else {
+      currentNoteCode = 0
+    }
+
+    const statPlayedNote = document.getElementById('played-note');
+    statPlayedNote.innerHTML = tunings.richter[currentNoteCode];
+  }
+
 
   window.addEventListener('mousemove', e => {
     // Move harmonica
@@ -33,12 +76,16 @@ if (harmo && holes.length) {
     document.body.classList.remove('contact');
 
     // Check hole/mouth collisions
+    let found = false;
     holes.forEach(hole => {
       if (contactMouth(hole)) {
         hole.classList.add('contact');
         document.body.classList.add('contact');
-      } else {
+        currentHole = hole.dataset.hole;
+        found = true;
+      } else if (!found) {
         hole.classList.remove('contact');
+        currentHole = 0;
       }
     });
   });
@@ -49,9 +96,11 @@ if (harmo && holes.length) {
     if (e.key === 'ArrowDown') {
       document.body.classList.remove('blowing')
       document.body.classList.add('drawing')
+      setCurrentNote('drawing');
     } else if (e.key === 'ArrowUp') {
       document.body.classList.remove('drawing')
       document.body.classList.add('blowing')
+      setCurrentNote('blowing');
     }
   });
 
@@ -59,7 +108,13 @@ if (harmo && holes.length) {
   window.addEventListener('keyup', e => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       document.body.classList.remove('blowing', 'drawing')
+      setCurrentNote('idle');
     }
   });
 
 }
+
+
+// A FAIRE ::
+
+// fn onResize() : réajuster les centres

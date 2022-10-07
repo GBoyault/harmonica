@@ -1,0 +1,12 @@
+// _stats.scss
+
+#stats {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+
+  background-color: rgba($black, .25);
+  color: $white;
+  padding: 15px;
+  border: 1px solid $white;
+}
