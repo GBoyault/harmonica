@@ -1,6 +1,7 @@
 // app.js
 
 import soundPlayer from './components/sound-player';
+import tunings from './components/tunings';
 
 // soundPlayer.playNote(447, 'sine');
 // soundPlayer.playNote(440, 'square');
@@ -13,43 +14,21 @@ const mouth = document.querySelector('#mouth .hole');
 const holes = document.querySelectorAll('#harmonica .hole')
 
 // Computed values
-const mouthRect = mouth.getBoundingClientRect();
+let mouthRect = mouth.getBoundingClientRect();
 const harmoCenterX = 240;
 const harmoCenterY = 20;
-const mouthWidth = 40;
 const toleranceX = 5;
 const toleranceY = 20;
-
-const tunings = {
-  richter: {
-    '0': 'silence',
-    '1': 'do',
-    '-1': 'ré',
-    '2': 'mi',
-    '-2': 'sol',
-    '3': 'sol',
-    '-3': 'si',
-    '4': 'do',
-    '-4': 'ré',
-    '5': 'mi',
-    '-5': 'fa',
-    '6': 'sol',
-    '-6': 'la',
-    '-7': 'si',
-    '7': 'do',
-    '-8': 'ré',
-    '8': 'mi',
-    '-9': 'fa',
-    '9': 'sol',
-    '-10': 'la',
-    '10': 'do',
-  }
-}
 
 let keyPressed = null;
 
 let currentHole = 0;
+let currentTuning = 'paddy'; // richter | paddy
 let currentNoteCode = 'silence';
+let releasedKey = false;
+
+let bending = '';
+let firstDrawTimestamp = Date.now();
 
 if (harmo && holes.length) {
 
@@ -63,17 +42,58 @@ if (harmo && holes.length) {
   }
 
   const setCurrentNote = air => {
+    const lastNoteCode = currentNoteCode;
+
     if ('blowing' === air) {
       currentNoteCode = currentHole;
+      bending = '';
     } else if ('drawing' === air) {
       currentNoteCode = currentHole * -1;
+
+      if (currentNoteCode === -4) {
+
+        if (releasedKey) {
+
+          const timestamp = Date.now();
+          const diff = timestamp - firstDrawTimestamp
+
+          if (diff < 250) {
+            bending = '-';
+          }
+
+          currentNoteCode = (currentHole * -1) + bending;
+          console.log('diff ' + diff)
+        } else {
+          firstDrawTimestamp = Date.now();
+        }
+      }
+
+      releasedKey = false;
     } else {
       currentNoteCode = 0
+      bending = '';
+      releasedKey = true;
+
+      setTimeout(() => {
+        releasedKey = false;
+      }, 500)
+    }
+
+    console.log('relased ' + releasedKey)
+
+    if (currentNoteCode === 0) {
+      soundPlayer.stopNote();
+    } else if (currentNoteCode !== lastNoteCode) {
+      const noteArr = tunings[currentTuning][currentNoteCode].split('-')
+      const note = noteArr[0];
+      const range = noteArr[1];
+      soundPlayer.playNote(note, range);
     }
 
     const statPlayedNote = document.getElementById('played-note');
-    statPlayedNote.innerHTML = tunings.richter[currentNoteCode];
+    statPlayedNote.innerHTML = tunings[currentTuning][currentNoteCode];
   }
+
 
 
   window.addEventListener('mousemove', e => {
@@ -99,6 +119,8 @@ if (harmo && holes.length) {
   });
 
 
+
+
   window.addEventListener('keydown', e => {
 
     if (e.key === 'ArrowDown') {
@@ -115,9 +137,10 @@ if (harmo && holes.length) {
   });
 
 
+
   window.addEventListener('keyup', e => {
     if (e.key === 'ArrowDown') {
-      document.body.classList.remove('drawing')
+      document.body.classList.remove('drawing');
     } else if (e.key === 'ArrowUp') {
       document.body.classList.remove('blowing')
     }
@@ -128,9 +151,18 @@ if (harmo && holes.length) {
     }
   });
 
+
+  window.addEventListener('resize', e => {
+    mouthRect = mouth.getBoundingClientRect();
+  });
+
+
 }
 
 
 // A FAIRE ::
 
-// fn onResize() : réajuster les centres
+// restructurer en classe
+
+
+// regarder synthese sonore du site de bouche de yann
