@@ -1,5 +1,12 @@
 // app.js
 
+import soundPlayer from './components/sound-player';
+
+// soundPlayer.playNote(447, 'sine');
+// soundPlayer.playNote(440, 'square');
+// soundPlayer.playNote(1047, 'triangle');
+// soundPlayer.playNote(1047, 'sawtooth');
+
 // DOM elements
 const harmo = document.getElementById('harmonica');
 const mouth = document.querySelector('#mouth .hole');
@@ -39,6 +46,7 @@ const tunings = {
   }
 }
 
+let keyPressed = null;
 
 let currentHole = 0;
 let currentNoteCode = 'silence';
@@ -94,20 +102,28 @@ if (harmo && holes.length) {
   window.addEventListener('keydown', e => {
 
     if (e.key === 'ArrowDown') {
-      document.body.classList.remove('blowing')
-      document.body.classList.add('drawing')
+      document.body.classList.remove('blowing');
+      document.body.classList.add('drawing');
+      keyPressed = e.key;
       setCurrentNote('drawing');
     } else if (e.key === 'ArrowUp') {
       document.body.classList.remove('drawing')
       document.body.classList.add('blowing')
+      keyPressed = e.key;
       setCurrentNote('blowing');
     }
   });
 
 
   window.addEventListener('keyup', e => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      document.body.classList.remove('blowing', 'drawing')
+    if (e.key === 'ArrowDown') {
+      document.body.classList.remove('drawing')
+    } else if (e.key === 'ArrowUp') {
+      document.body.classList.remove('blowing')
+    }
+
+    if (keyPressed === e.key) {
+      keyPressed = null;
       setCurrentNote('idle');
     }
   });
