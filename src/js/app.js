@@ -1,168 +1,133 @@
 // app.js
 
-import soundPlayer from './components/sound-player';
-import tunings from './components/tunings';
+import { tunings } from './components/tunings';
+import SoundPlayer from './components/SoundPlayer';
+import StatsManager from './components/StatsManager';
+import KeysManager from './components/KeysManager';
 
-// soundPlayer.playNote(447, 'sine');
-// soundPlayer.playNote(440, 'square');
-// soundPlayer.playNote(1047, 'triangle');
-// soundPlayer.playNote(1047, 'sawtooth');
 
-// DOM elements
-const harmo = document.getElementById('harmonica');
-const mouth = document.querySelector('#mouth .hole');
-const holes = document.querySelectorAll('#harmonica .hole')
+class App {
+  constructor() {
+    // Utilities
+    this.stats = new StatsManager();
+    this.player = new SoundPlayer();
+    this.keys = new KeysManager();
 
-// Computed values
-let mouthRect = mouth.getBoundingClientRect();
-const harmoCenterX = 240;
-const harmoCenterY = 20;
-const toleranceX = 5;
-const toleranceY = 20;
+    // DOM elements
+    this.harmo = document.getElementById('harmonica');
+    this.mouth = document.querySelector('#mouth .hole');
+    this.holes = document.querySelectorAll('#harmonica .hole');
 
-let keyPressed = null;
+    // Computed values
+    this.mouthRect = this.mouth.getBoundingClientRect();
+    this.harmoCenterX = 240;
+    this.harmoCenterY = 20;
+    this.toleranceX = 5;
+    this.toleranceY = 20;
 
-let currentHole = 0;
-let currentTuning = 'paddy'; // richter | paddy
-let currentNoteCode = 'silence';
-let releasedKey = false;
+    this.currentHole = 0;
+    this.currentTuning = 'richter'; // richter | paddy
+    this.currentNoteCode = 0;
 
-let bending = '';
-let firstDrawTimestamp = Date.now();
+    this.handleMouse = this.handleMouse.bind(this);
+    this.handleKeys = this.handleKeys.bind(this);
 
-if (harmo && holes.length) {
-
-  const contactMouth = hole => {
-    const holeRect = hole.getBoundingClientRect();
-
-    return holeRect.x > mouthRect.x - toleranceX
-      & holeRect.x + holeRect.width < mouthRect.x + mouthRect.width + toleranceX
-      & holeRect.y > mouthRect.y - toleranceY
-      & holeRect.y + holeRect.height < mouthRect.y + mouthRect.height + toleranceY
+    this.initEventListeners();
+    this.stats.updateTuning(this.currentTuning);
   }
 
-  const setCurrentNote = air => {
-    const lastNoteCode = currentNoteCode;
+  initEventListeners() {
+    window.addEventListener('keydown', this.handleKeys);
+    window.addEventListener('keyup', this.handleKeys);
+    window.addEventListener('mousemove', this.handleMouse);
 
-    if ('blowing' === air) {
-      currentNoteCode = currentHole;
-      bending = '';
-    } else if ('drawing' === air) {
-      currentNoteCode = currentHole * -1;
-
-      if (currentNoteCode === -4) {
-
-        if (releasedKey) {
-
-          const timestamp = Date.now();
-          const diff = timestamp - firstDrawTimestamp
-
-          if (diff < 250) {
-            bending = '-';
-          }
-
-          currentNoteCode = (currentHole * -1) + bending;
-          console.log('diff ' + diff)
-        } else {
-          firstDrawTimestamp = Date.now();
-        }
-      }
-
-      releasedKey = false;
-    } else {
-      currentNoteCode = 0
-      bending = '';
-      releasedKey = true;
-
-      setTimeout(() => {
-        releasedKey = false;
-      }, 500)
-    }
-
-    console.log('relased ' + releasedKey)
-
-    if (currentNoteCode === 0) {
-      soundPlayer.stopNote();
-    } else if (currentNoteCode !== lastNoteCode) {
-      const noteArr = tunings[currentTuning][currentNoteCode].split('-')
-      const note = noteArr[0];
-      const range = noteArr[1];
-      soundPlayer.playNote(note, range);
-    }
-
-    const statPlayedNote = document.getElementById('played-note');
-    statPlayedNote.innerHTML = tunings[currentTuning][currentNoteCode];
+    window.addEventListener('resize', e => {
+      this.mouthRect = this.mouth.getBoundingClientRect();
+    });
   }
 
-
-
-  window.addEventListener('mousemove', e => {
+  handleMouse(event) {
     // Move harmonica
-    harmo.style.left = (e.clientX - harmoCenterX) + 'px'
-    harmo.style.top = (e.clientY - harmoCenterY) + 'px'
+    this.harmo.style.left = (event.clientX - this.harmoCenterX) + 'px'
+    this.harmo.style.top = (event.clientY - this.harmoCenterY) + 'px'
 
     document.body.classList.remove('contact');
 
     // Check hole/mouth collisions
     let found = false;
-    holes.forEach(hole => {
-      if (contactMouth(hole)) {
+    this.holes.forEach(hole => {
+      if (this.contactMouth(hole)) {
         hole.classList.add('contact');
         document.body.classList.add('contact');
-        currentHole = hole.dataset.hole;
+        this.currentHole = hole.dataset.hole;
         found = true;
       } else if (!found) {
         hole.classList.remove('contact');
-        currentHole = 0;
+        this.currentHole = 0;
       }
     });
-  });
 
+    this.stats.updateHole(this.currentHole);
+  }
 
+  handleKeys(event) {
+    const keyState = this.keys.keyEvent(event);
 
+    this.stats.updateKeys(keyState.keysPressed)
+    this.stats.updateAir(keyState.airState)
 
-  window.addEventListener('keydown', e => {
+    document.body.classList.remove('blow', 'draw');
 
-    if (e.key === 'ArrowDown') {
-      document.body.classList.remove('blowing');
-      document.body.classList.add('drawing');
-      keyPressed = e.key;
-      setCurrentNote('drawing');
-    } else if (e.key === 'ArrowUp') {
-      document.body.classList.remove('drawing')
-      document.body.classList.add('blowing')
-      keyPressed = e.key;
-      setCurrentNote('blowing');
-    }
-  });
-
-
-
-  window.addEventListener('keyup', e => {
-    if (e.key === 'ArrowDown') {
-      document.body.classList.remove('drawing');
-    } else if (e.key === 'ArrowUp') {
-      document.body.classList.remove('blowing')
+    if (keyState.airState.includes('blow')) {
+      document.body.classList.add('blow')
+    } else if (keyState.airState.includes('draw')) {
+      document.body.classList.add('draw');
     }
 
-    if (keyPressed === e.key) {
-      keyPressed = null;
-      setCurrentNote('idle');
+    this.setCurrentNote(keyState.airState);
+  }
+
+  setCurrentNote(air) {
+    const lastNoteCode = this.currentNoteCode;
+
+    if ('blow' === air) {
+      this.currentNoteCode = this.currentHole;
+    } else if ('blow_b1' === air) {
+      this.currentNoteCode = (this.currentHole) + '-';
+    } else if ('blow_b2' === air) {
+      this.currentNoteCode = (this.currentHole) + '--';
+    } else if ('draw' === air) {
+      this.currentNoteCode = this.currentHole * -1;
+    } else if ('draw_b1' === air) {
+      this.currentNoteCode = (this.currentHole * -1) + '-';
+    } else if ('draw_b2' === air) {
+      this.currentNoteCode = (this.currentHole * -1) + '--';
+    } else if ('draw_b3' === air) {
+      this.currentNoteCode = (this.currentHole * -1) + '---';
+    } else {
+      this.currentNoteCode = 0
     }
-  });
 
+    if (this.currentNoteCode === 0) {
+      this.player.stopNote();
+    } else if (this.currentNoteCode !== lastNoteCode) {
+      const freq = tunings[this.currentTuning][this.currentNoteCode]
+      this.player.playNote(freq);
+    }
 
-  window.addEventListener('resize', e => {
-    mouthRect = mouth.getBoundingClientRect();
-  });
+    this.stats.updateFreq(tunings[this.currentTuning][this.currentNoteCode]);
+    this.stats.updateNote(tunings[this.currentTuning][this.currentNoteCode]);
+  }
 
+  contactMouth(hole) {
+    const holeRect = hole.getBoundingClientRect();
 
+    return holeRect.x > this.mouthRect.x - this.toleranceX
+      & holeRect.x + holeRect.width < this.mouthRect.x + this.mouthRect.width + this.toleranceX
+      & holeRect.y > this.mouthRect.y - this.toleranceY
+      & holeRect.y + holeRect.height < this.mouthRect.y + this.mouthRect.height + this.toleranceY
+  }
 }
 
 
-// A FAIRE ::
-
-// restructurer en classe
-
-
-// regarder synthese sonore du site de bouche de yann
+new App;

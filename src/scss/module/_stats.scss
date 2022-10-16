@@ -4,9 +4,27 @@
   position: fixed;
   top: 15px;
   right: 15px;
+  font-family: monospace;
+  min-width: 150px;
+
 
   background-color: rgba($black, .25);
   color: $white;
-  padding: 15px;
+  padding: 10px 15px;
   border: 1px solid $white;
+
+
+  .stat {
+    .label {
+      display: inline-block;
+      width: 60px;
+    }
+    
+    .value {
+      &::before {
+        content: ':';
+        margin-right: 4px;
+      }
+    }
+  }
 }

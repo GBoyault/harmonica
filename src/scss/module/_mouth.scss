@@ -24,10 +24,10 @@
     border: 2px solid red;
     border-radius: 50%;
 
-    .blowing & {
+    .blow & {
       background-color: rgba($color: #af6c15, $alpha: .4);
     }
-    .drawing & {
+    .draw & {
       background-color: rgba($color: #3079be, $alpha: .4);
     }
   }

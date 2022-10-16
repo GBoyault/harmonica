@@ -61,10 +61,10 @@
     &.contact {
       background-color: green;
 
-      .blowing & {
+      .blow & {
         background-color: rgb(255, 0, 0);
       }
-      .drawing & {
+      .draw & {
         background-color: blue;
       }
     }

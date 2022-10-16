@@ -1,8 +1,6 @@
-// sound-player.js
+// SoundPlayer.js
 
-import frequencies from './frequencies';
-
-class SoundPlayer {
+export default class SoundPlayer {
   constructor() {
 
     this.playing = false;
@@ -13,11 +11,13 @@ class SoundPlayer {
   }
 
 
-  playNote(note, range) {
+  playNote(freq) {
+    if (typeof freq !== 'number') {
+      return;
+    }
 
     this.initOscillator();
-    const frequency = frequencies[note][range];
-    this.oscillator.frequency.value = frequency;
+    this.oscillator.frequency.value = freq;
     this.oscillator.start(0);
     this.playing = true;
   }
@@ -43,7 +43,3 @@ class SoundPlayer {
     )
   }
 }
-
-
-
-export default new SoundPlayer();
