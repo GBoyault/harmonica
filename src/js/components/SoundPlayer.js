@@ -5,9 +5,19 @@ export default class SoundPlayer {
 
     this.playing = false;
 
-    this.context = null;
-    this.oscillator = null;
-    this.gain = null;
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.osc = null;
+    
+    this.gain = this.ctx.createGain();
+    this.filter = this.ctx.createBiquadFilter();
+
+    this.filter.type = "lowpass";
+    // this.filter.frequency.setTargetAtTime(1000, this.ctx.currentTime, 0);
+
+    this.gain.gain.exponentialRampToValueAtTime(
+      0.00001, this.ctx.currentTime + 0.04
+    )
+
   }
 
 
@@ -16,30 +26,28 @@ export default class SoundPlayer {
       return;
     }
 
-    this.initOscillator();
-    this.oscillator.frequency.value = freq;
-    this.oscillator.start(0);
+    this.initOscillator(freq);
+    this.osc.start(0);
     this.playing = true;
   }
 
   stopNote() {
     if (this.playing) {
-      this.oscillator.stop();
+      this.osc.stop();
       this.playing = false;
     }
   }
 
-  initOscillator() {
+  initOscillator(freq) {
     this.stopNote();
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
-    this.oscillator = this.context.createOscillator();
-    this.oscillator.type = 'sawtooth'; // sawtooth sine triangle square;
-    this.gain = this.context.createGain();
-    this.oscillator.connect(this.gain);
-    this.oscillator.connect(this.context.destination);
+    
+    this.osc = this.ctx.createOscillator();
+    this.osc.frequency.value = freq;
+    this.osc.type = 'sawtooth'; // sine | sawtooth | triangle | square;
 
-    this.gain.gain.exponentialRampToValueAtTime(
-      0.00001, this.context.currentTime + 0.04
-    )
+    this.osc.connect(this.gain);
+    this.gain.connect(this.filter);
+    this.filter.connect(this.ctx.destination);
+
   }
 }
