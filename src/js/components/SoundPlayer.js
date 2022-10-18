@@ -26,9 +26,14 @@ export default class SoundPlayer {
       return;
     }
 
-    this.initOscillator(freq);
-    this.osc.start(0);
-    this.playing = true;
+    if (this.playing) {
+      this.osc.frequency.value = freq;
+      this.setFrequency(freq);
+    } else { 
+      this.initOscillator(freq);
+      this.osc.start(0);
+      this.playing = true;
+    }
   }
 
   stopNote() {
@@ -42,12 +47,18 @@ export default class SoundPlayer {
     this.stopNote();
     
     this.osc = this.ctx.createOscillator();
-    this.osc.frequency.value = freq;
     this.osc.type = 'sawtooth'; // sine | sawtooth | triangle | square;
-
-    this.osc.connect(this.gain);
-    this.gain.connect(this.filter);
-    this.filter.connect(this.ctx.destination);
-
+    this.setFrequency(freq);
+    
+    // this.osc.connect(this.gain);
+    // this.gain.connect(this.filter);
+    // this.filter.connect(this.ctx.destination);
+    
+    this.osc.connect(this.ctx.destination);
+    
+  }
+  
+  setFrequency(freq) {
+    this.osc.frequency.value = freq;
   }
 }

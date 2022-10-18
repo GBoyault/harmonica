@@ -105,7 +105,11 @@ class App {
     } else if ('draw_b3' === air) {
       this.currentNoteCode = (this.currentHole * -1) + '---';
     } else {
-      this.currentNoteCode = 0
+      this.currentNoteCode = 0;
+    }
+
+    if (['0-', '0--', '0---'].includes(this.currentNoteCode)) {
+      this.currentNoteCode = 0;
     }
 
     if (this.currentNoteCode === 0) {
