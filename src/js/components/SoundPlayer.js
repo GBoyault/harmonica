@@ -8,16 +8,18 @@ export default class SoundPlayer {
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.out = this.ctx.destination;
     this.osc = null;
+    this.osc2 = null;
     
     this.gain = this.ctx.createGain();
-    this.filter = this.ctx.createBiquadFilter();
+    this.gain.gain.value = 10000;
+    // this.filter = this.ctx.createBiquadFilter();
 
-    this.filter.type = "lowpass";
+    // this.filter.type = "lowpass";
     // this.filter.frequency.setTargetAtTime(1000, this.ctx.currentTime, 0);
 
-    this.gain.gain.exponentialRampToValueAtTime(
-      0.00001, this.ctx.currentTime + 0.04
-    )
+    // this.gain.gain.exponentialRampToValueAtTime(
+    //   0.00001, this.ctx.currentTime + 0.04
+    // )
   }
 
 
@@ -32,6 +34,7 @@ export default class SoundPlayer {
     } else { 
       this.initOscillator(freq);
       this.osc.start(0);
+      this.osc2.start(0);
       this.playing = true;
     }
   }
@@ -39,6 +42,7 @@ export default class SoundPlayer {
   stopNote() {
     if (this.playing) {
       this.osc.stop();
+      this.osc2.stop();
       this.playing = false;
     }
   }
@@ -48,17 +52,24 @@ export default class SoundPlayer {
     
     this.osc = this.ctx.createOscillator();
     this.osc.type = 'sawtooth'; // sine | sawtooth | triangle | square;
+    this.osc2 = this.ctx.createOscillator();
+    this.osc2.type = 'sawtooth'; // sine | sawtooth | triangle | square;
     this.setFrequency(freq);
+
+    this.osc.connect(this.gain);
+    this.gain.connect(this.osc2.frequency)
     
     // this.osc.connect(this.gain);
     // this.gain.connect(this.filter);
     // this.filter.connect(this.out);
     
-    this.osc.connect(this.out);
+    // this.osc.connect(this.out);
+    this.osc2.connect(this.out);
     
   }
   
   setFrequency(freq) {
     this.osc.frequency.value = freq;
+    this.osc2.frequency.value = freq * 1.75;
   }
 }
