@@ -45,6 +45,7 @@ export default class KeysManager {
   keyEvent(event) {
     const index = this.keys.findIndex(k => k.key === event.key);
     let lastPressed = null;
+    
     if (-1 !== index) {
       this.keys[index].pressed = (event.type === 'keydown');
 
@@ -59,6 +60,8 @@ export default class KeysManager {
       airState: this.computeAirState(keysPressed.map(k => k.fn), lastPressed)
     }
   }
+
+
 
   computeAirState(keys, lastPressed) {
     let air = '-';

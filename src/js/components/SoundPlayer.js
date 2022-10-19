@@ -6,6 +6,7 @@ export default class SoundPlayer {
     this.playing = false;
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.out = this.ctx.destination;
     this.osc = null;
     
     this.gain = this.ctx.createGain();
@@ -17,7 +18,6 @@ export default class SoundPlayer {
     this.gain.gain.exponentialRampToValueAtTime(
       0.00001, this.ctx.currentTime + 0.04
     )
-
   }
 
 
@@ -52,9 +52,9 @@ export default class SoundPlayer {
     
     // this.osc.connect(this.gain);
     // this.gain.connect(this.filter);
-    // this.filter.connect(this.ctx.destination);
+    // this.filter.connect(this.out);
     
-    this.osc.connect(this.ctx.destination);
+    this.osc.connect(this.out);
     
   }
   
