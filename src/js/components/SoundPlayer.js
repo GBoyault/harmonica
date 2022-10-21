@@ -7,17 +7,20 @@ export default class SoundPlayer {
 
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.out = this.ctx.destination;
-    this.osc = null;
-    this.osc2 = null;
+    this.carrier = null;
+    this.mod1 = null;
+    this.mod2 = null;
     
-    this.gain = this.ctx.createGain();
-    this.gain.gain.value = 10000;
+    this.gain1 = this.ctx.createGain();
+    this.gain1.gain.value = 3000;
+    this.gain2 = this.ctx.createGain();
+    this.gain2.gain.value = 3000;
     // this.filter = this.ctx.createBiquadFilter();
 
     // this.filter.type = "lowpass";
     // this.filter.frequency.setTargetAtTime(1000, this.ctx.currentTime, 0);
 
-    // this.gain.gain.exponentialRampToValueAtTime(
+    // this.gain1.gain.exponentialRampToValueAtTime(
     //   0.00001, this.ctx.currentTime + 0.04
     // )
   }
@@ -29,47 +32,64 @@ export default class SoundPlayer {
     }
 
     if (this.playing) {
-      this.osc.frequency.value = freq;
+      this.carrier.frequency.value = freq;
       this.setFrequency(freq);
     } else { 
-      this.initOscillator(freq);
-      this.osc.start(0);
-      this.osc2.start(0);
+      this.initcarrierillator(freq);
+      this.carrier.start();
+      this.mod1.start();
+      this.mod2.start();
       this.playing = true;
     }
   }
 
   stopNote() {
     if (this.playing) {
-      this.osc.stop();
-      this.osc2.stop();
+      this.carrier.stop();
+      this.mod1.stop();
+      this.mod2.stop();
       this.playing = false;
     }
   }
 
-  initOscillator(freq) {
+  initcarrierillator(freq) {
     this.stopNote();
     
-    this.osc = this.ctx.createOscillator();
-    this.osc.type = 'sawtooth'; // sine | sawtooth | triangle | square;
-    this.osc2 = this.ctx.createOscillator();
-    this.osc2.type = 'sawtooth'; // sine | sawtooth | triangle | square;
+    this.carrier = this.ctx.createOscillator();
+    this.carrier.type = 'sine'; // sine | sawtooth | triangle | square;
+    this.mod1 = this.ctx.createOscillator();
+    this.mod1.type = 'sine'; // sine | sawtooth | triangle | square;
+    this.mod2 = this.ctx.createOscillator();
+    this.mod2.type = 'sine'; // sine | sawtooth | triangle | square;
     this.setFrequency(freq);
 
-    this.osc.connect(this.gain);
-    this.gain.connect(this.osc2.frequency)
+    // this.mod1.connect(this.gain1);
+    // this.gain1.connect(this.carrier)
+    // this.carrier.connect(this.gain2);
+    // this.gain2.connect(this.mod2)
     
-    // this.osc.connect(this.gain);
-    // this.gain.connect(this.filter);
+    // this.carrier.connect(this.gain1);
+    // this.gain1.connect(this.filter);
     // this.filter.connect(this.out);
     
-    // this.osc.connect(this.out);
-    this.osc2.connect(this.out);
+    this.mod1.connect(this.out);
+    this.carrier.connect(this.out);
+    this.mod2.connect(this.out);
     
   }
   
   setFrequency(freq) {
-    this.osc.frequency.value = freq;
-    this.osc2.frequency.value = freq * 1.75;
+    const semitone = 1;
+    this.mod1.frequency.value = freq * this.octave(3) * this.semitone(4);
+    this.carrier.frequency.value = freq;
+    this.mod2.frequency.value = freq * this.octave(1);
+  }
+
+  semitone(nb) {
+    return ((2 ** (1/12)) ** nb);
+  }
+
+  octave(nb) {
+    return 2 ** nb;
   }
 }
