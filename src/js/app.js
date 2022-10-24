@@ -122,10 +122,10 @@ class App {
     }
 
     if (this.currentNoteCode === 0) {
-      this.player.stopNote();
+      this.player.stop();
     } else if (this.currentNoteCode !== lastNoteCode) {
       const freq = tunings[this.currentTuning][this.currentNoteCode]
-      this.player.playNote(freq);
+      this.player.play(freq);
     }
 
     this.stats.updateFreq(tunings[this.currentTuning][this.currentNoteCode]);
