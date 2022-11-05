@@ -1,0 +1,80 @@
+// _layout.scss
+
+.main-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: rgb(56, 56, 56);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  padding: 15px;
+  color: $white;
+}
+
+.heading {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 2.2rem;
+  font-style: italic;
+  line-height: 1.2;
+
+  $offset: 10px;
+
+  .word {
+    display: block;
+    position: relative;
+
+    &-1 {
+      left: $offset;
+    }
+    &-2 {
+      left: calc(#{$offset} * 2);
+    }
+    &-3 {
+      left: calc(#{$offset} * 3);
+    }
+    &-4 {
+      left: calc(#{$offset} * 4);
+    }
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 40%;
+    background-color: $white;
+  }
+
+  &::before {
+    margin-bottom: 10px;
+  }
+
+  &::after {
+    margin-left: calc(#{$offset} * 5);
+    margin-top: 10px;
+  }
+}
+
+.scene {
+  flex-grow: 1;
+  position: relative;
+
+  .background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px);
+  }
+}

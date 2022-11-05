@@ -1,0 +1,30 @@
+// _instruction.scss
+
+.instructions {
+}
+
+.instruction {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+
+  &--mt {
+    margin-top: 8px;
+  }
+
+  .key {
+    display: inline-block;
+    font-weight: 700;
+    background-color: $white;
+    color: rgba($black, 0.65);
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 10%;
+    margin: 0 2px;
+  }
+
+  .result {
+    font-family: monospace;
+  }
+}

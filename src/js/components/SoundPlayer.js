@@ -6,7 +6,8 @@ export default class SoundPlayer {
   constructor() {
     this.playing = false;
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    this.notes = [];
+    this.currentNote = null;
+    this.stoppedNotes = [];
   }
 
 
@@ -16,31 +17,35 @@ export default class SoundPlayer {
     }
 
     if (this.playing) {
-      this.notes[0].setFreq(freq);
+      // this.notes[0].setFreq(freq);
+      this.currentNote.note.setFreq(freq);
     } else {
 
-      if (this.notes.length) {
+      if (this.currentNote?.note) {
         // const lastNote = this.notes.shift();
         // lastNote.stop();
-
-        this.notes[0].stop();
+        this.stoppedNotes.unshift(this.currentNote)
+        this.stoppedNotes[0].note.stop();
       }
 
-      this.notes.unshift(new Note(this.ctx, freq));
+      // this.notes.unshift(new Note(this.ctx, freq));
+      this.currentNote = { note: new Note(this.ctx, freq), timestamp: Date.now() };
       this.playing = true;
     }
+
   }
 
   stop() {
     if (this.playing) {
-      if (this.notes.length) {
+      if (this.currentNote?.note) {
         // const lastNote = this.notes.shift();
         // lastNote.stop();
 
-        this.notes[0].stop();
-
+        this.stoppedNotes.unshift(this.currentNote)
+        this.stoppedNotes[0].note.stop();
       }
       this.playing = false;
+      this.currentNote = null;
     }
   }
 

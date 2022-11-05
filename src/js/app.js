@@ -27,6 +27,7 @@ class App {
 
     this.currentHole = 0;
     this.currentTuning = 'richter'; // richter | paddy
+    this.currentTone = 'C'; // richter | paddy
     this.currentNoteCode = 0;
     this.currentAirState = '-';
 
@@ -34,11 +35,10 @@ class App {
     this.handleKeys = this.handleKeys.bind(this);
 
     this.initEventListeners();
-    this.stats.updateTuning(this.currentTuning);
+    this.stats.updateTuning(`${this.currentTone} ${this.currentTuning}`);
 
     // Request animation frame
     this.startLoop();
-
   }
 
   initEventListeners() {
@@ -50,6 +50,7 @@ class App {
       this.mouthRect = this.mouth.getBoundingClientRect();
     });
   }
+
 
   handleMouse(event) {
     // Move harmonica
@@ -71,7 +72,7 @@ class App {
         this.currentHole = 0;
       }
     });
-    
+
     // Update stats
     this.stats.updateHole(this.currentHole);
   }
@@ -95,6 +96,7 @@ class App {
       document.body.classList.add('draw');
     }
   }
+
 
   setCurrentNote() {
     const lastNoteCode = this.currentNoteCode;
@@ -121,16 +123,21 @@ class App {
       this.currentNoteCode = 0;
     }
 
-    if (this.currentNoteCode === 0) {
-      this.player.stop();
-    } else if (this.currentNoteCode !== lastNoteCode) {
-      const freq = tunings[this.currentTuning][this.currentNoteCode]
-      this.player.play(freq);
+
+    if (this.currentNoteCode !== lastNoteCode) {
+      if (this.currentNoteCode === 0) {
+        this.player.play(freq);
+        this.player.stop();
+      } else {
+        const freq = tunings[this.currentTuning][this.currentNoteCode]
+        this.player.play(freq);
+      }
     }
 
     this.stats.updateFreq(tunings[this.currentTuning][this.currentNoteCode]);
     this.stats.updateNote(tunings[this.currentTuning][this.currentNoteCode]);
   }
+
 
   contactMouth(hole) {
     const holeRect = hole.getBoundingClientRect();
