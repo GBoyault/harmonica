@@ -1,6 +1,6 @@
 // app.js
 
-import { tunings } from './components/tunings';
+import { tunings, f } from './components/tunings';
 import { octave, semitone } from './components/utils';
 import SoundPlayer from './components/SoundPlayer';
 import StatsManager from './components/StatsManager';
@@ -28,12 +28,15 @@ class App {
 
     this.currentHole = 0;
     this.currentTuning = 'richter'; // richter | paddy
-    this.currentTone = 'C'; // richter | paddy
+    this.currentTone = 'C'; // C, C#, D etc
+    this.transposition = 0; // in semitone: C = 0, C# = 1, B = -1 etc
     this.currentNoteCode = 0;
     this.currentAirState = '-';
 
     this.handleMouse = this.handleMouse.bind(this);
     this.handleKeys = this.handleKeys.bind(this);
+    this.changeTuning = this.changeTuning.bind(this);
+    this.changeTone = this.changeTone.bind(this);
 
     this.initEventListeners();
     this.stats.updateTuning(this.currentTuning);
@@ -52,6 +55,32 @@ class App {
     window.addEventListener('resize', e => {
       this.mouthRect = this.mouth.getBoundingClientRect();
     });
+
+    const tuning = document.getElementById('tuning');
+    tuning.addEventListener('click', this.changeTuning);
+
+    const tone = document.getElementById('tone');
+    tone.addEventListener('click', this.changeTone);
+  }
+
+
+  changeTuning() {
+    this.currentTuning = 'richter' === this.currentTuning
+      ? 'paddy' : 'richter';
+
+    this.stats.updateTuning(this.currentTuning);
+  }
+
+
+  changeTone() {
+    const index = Object.keys(f).findIndex(tone => tone === this.currentTone);
+
+    if (index !== -1) {
+      const newIndex = index < 11 ? index + 1 : 0;
+      this.currentTone = Object.keys(f)[newIndex];
+      this.transposition = newIndex < 7 ? newIndex : newIndex - 12;
+      this.stats.updateTone(this.currentTone);
+    }
   }
 
 
@@ -127,17 +156,25 @@ class App {
     }
 
     const freq = tunings[this.currentTuning][this.currentNoteCode];
+    const transposedFreq = this.transposition !== 0
+      ? Math.trunc(freq * semitone(this.transposition) * 100) / 100
+      : freq
 
     if (this.currentNoteCode !== lastNoteCode) {
       if (this.currentNoteCode === 0) {
         this.player.stop();
+        this.stats.updateFreq(transposedFreq);
+        this.stats.updateNote(freq, this.transposition);
       } else {
-        this.player.play(freq);
+
+        if (!isNaN(transposedFreq)) {
+          this.player.play(transposedFreq);
+
+          this.stats.updateFreq(transposedFreq);
+          this.stats.updateNote(freq, this.transposition);
+        }
       }
     }
-
-    this.stats.updateFreq(freq);
-    this.stats.updateNote(tunings[this.currentTuning][this.currentNoteCode]);
   }
 
 

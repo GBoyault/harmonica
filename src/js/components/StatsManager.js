@@ -26,22 +26,35 @@ export default class StatsManager {
     this.air.innerHTML = air;
   }
 
-  updateNote(freq = '-') {
+  updateNote(freq = '-', transpostion = 0) {
     let playedNote = '-';
 
     for (const [note, frequencies] of Object.entries(f)) {
       const index = frequencies.findIndex(fr => fr === freq);
 
       if (-1 !== index) {
-        playedNote = note + index;
+        // playedNote = note + index;
+        playedNote = note;
+
+        if (transpostion) {
+          const noteIndex = Object.keys(f).findIndex(n => n === note);
+          let transposedIndex = noteIndex + transpostion;
+          if (transposedIndex > 11) {
+            transposedIndex -= 12;
+          } else if (transposedIndex < 0) {
+            transposedIndex += 12;
+          }
+
+          playedNote = Object.keys(f)[transposedIndex];
+        }
       }
     }
 
     this.note.innerHTML = playedNote;
   }
-  
+
   updateFreq(freq = '-') {
-    this.freq.innerHTML = freq ?? '-';
+    this.freq.innerHTML = freq !== 0 ? freq : '-';
   }
 
 

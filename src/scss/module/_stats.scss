@@ -19,18 +19,16 @@
       &--clickable {
         cursor: pointer;
 
-        &:hover {
+        // &:hover {
           text-decoration: underline;
-        }
+        // }
       }
-
+      
       &::before {
         content: ":";
         margin-right: 4px;
-
-        &:hover {
-          text-decoration: none !important;
-        }
+        display:inline-block;
+        text-decoration: none !important;
       }
     }
   }
