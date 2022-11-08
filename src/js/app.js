@@ -61,6 +61,15 @@ class App {
 
     const tone = document.getElementById('tone');
     tone.addEventListener('click', this.changeTone);
+
+    const curtains = document.getElementById('curtains');
+    curtains.addEventListener('click', () => {
+      curtains.classList.add('opening');
+      setTimeout(() => {
+        curtains.classList.remove('opening');
+        curtains.classList.add('open');
+      }, 1000);
+    });
   }
 
 
@@ -163,6 +172,7 @@ class App {
     if (this.currentNoteCode !== lastNoteCode) {
       if (this.currentNoteCode === 0) {
         this.player.stop();
+
         this.stats.updateFreq(transposedFreq);
         this.stats.updateNote(freq, this.transposition);
       } else {
