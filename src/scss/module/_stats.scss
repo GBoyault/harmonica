@@ -3,28 +3,34 @@
 #stats {
   font-family: monospace;
   width: 100%;
-
-  // background-color: rgba($white, .2);
-  // background-color: rgb(99, 94, 87);
   color: $white;
-  // padding: 10px 15px;
-  // border: 1px solid $white;
-  border-top: 1px solid rgba($white,.35);
+  border-top: 1px solid rgba($white, 0.35);
   padding-top: 15px;
   font-size: 1.4rem;
-  // border-radius: 3px;
-
+  position: relative;
 
   .stat {
     .label {
       display: inline-block;
       width: 60px;
     }
-    
+
     .value {
+      &--clickable {
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
       &::before {
-        content: ':';
+        content: ":";
         margin-right: 4px;
+
+        &:hover {
+          text-decoration: none !important;
+        }
       }
     }
   }

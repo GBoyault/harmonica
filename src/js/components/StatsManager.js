@@ -10,11 +10,12 @@ export default class StatsManager {
     this.air = document.getElementById('air');
     this.note = document.getElementById('note');
     this.freq = document.getElementById('freq');
+    this.tone = document.getElementById('tone');
     this.tuning = document.getElementById('tuning');
   }
 
   updateKeys(keys = '-') {
-    this.keys.innerHTML = keys ?? '-';
+    this.keys.innerHTML = keys.length ? keys : '-';
   }
 
   updateHole(hole = 0) {
@@ -41,6 +42,11 @@ export default class StatsManager {
   
   updateFreq(freq = '-') {
     this.freq.innerHTML = freq ?? '-';
+  }
+
+
+  updateTone(tone = '-') {
+    this.tone.innerHTML = tone;
   }
 
 

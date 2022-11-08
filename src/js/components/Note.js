@@ -73,10 +73,10 @@ export default class Note {
     this.env.gain.linearRampToValueAtTime(1, now + this.attackTime);
 
     this.gain1.gain.setValueAtTime(0, now);
-    this.gain1.gain.linearRampToValueAtTime(this.maxGain1, now + this.attackTime);
+    this.gain1.gain.linearRampToValueAtTime(this.maxGain1, now + this.attackTime + 0.05);
 
     this.gain2.gain.setValueAtTime(0, now);
-    this.gain2.gain.linearRampToValueAtTime(this.maxGain2, now + this.attackTime);
+    this.gain2.gain.linearRampToValueAtTime(this.maxGain2, now + this.attackTime + 0.01);
 
     this.mod1.start();
     this.mod2.start();

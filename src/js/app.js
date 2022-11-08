@@ -1,6 +1,7 @@
 // app.js
 
 import { tunings } from './components/tunings';
+import { octave, semitone } from './components/utils';
 import SoundPlayer from './components/SoundPlayer';
 import StatsManager from './components/StatsManager';
 import KeysManager from './components/KeysManager';
@@ -35,11 +36,13 @@ class App {
     this.handleKeys = this.handleKeys.bind(this);
 
     this.initEventListeners();
-    this.stats.updateTuning(`${this.currentTone} ${this.currentTuning}`);
+    this.stats.updateTuning(this.currentTuning);
+    this.stats.updateTone(this.currentTone);
 
     // Request animation frame
     this.startLoop();
   }
+
 
   initEventListeners() {
     window.addEventListener('keydown', this.handleKeys);
@@ -123,18 +126,17 @@ class App {
       this.currentNoteCode = 0;
     }
 
+    const freq = tunings[this.currentTuning][this.currentNoteCode];
 
     if (this.currentNoteCode !== lastNoteCode) {
       if (this.currentNoteCode === 0) {
-        this.player.play(freq);
         this.player.stop();
       } else {
-        const freq = tunings[this.currentTuning][this.currentNoteCode]
         this.player.play(freq);
       }
     }
 
-    this.stats.updateFreq(tunings[this.currentTuning][this.currentNoteCode]);
+    this.stats.updateFreq(freq);
     this.stats.updateNote(tunings[this.currentTuning][this.currentNoteCode]);
   }
 
@@ -145,7 +147,7 @@ class App {
     return holeRect.x > this.mouthRect.x - this.toleranceX
       & holeRect.x + holeRect.width < this.mouthRect.x + this.mouthRect.width + this.toleranceX
       & holeRect.y > this.mouthRect.y - this.toleranceY
-      & holeRect.y + holeRect.height < this.mouthRect.y + this.mouthRect.height + this.toleranceY
+      & holeRect.y + holeRect.height < this.mouthRect.y + this.mouthRect.height + this.toleranceY;
   }
 
 
