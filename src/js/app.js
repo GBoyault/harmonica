@@ -1,7 +1,7 @@
 // app.js
 
 import { tunings, f } from './components/tunings';
-import { octave, semitone } from './components/utils';
+import { semitone } from './components/utils';
 import SoundPlayer from './components/SoundPlayer';
 import StatsManager from './components/StatsManager';
 import KeysManager from './components/KeysManager';
@@ -38,6 +38,7 @@ class App {
     this.changeTuning = this.changeTuning.bind(this);
     this.changeTone = this.changeTone.bind(this);
 
+    this.initIntro();
     this.initEventListeners();
     this.stats.updateTuning(this.currentTuning);
     this.stats.updateTone(this.currentTone);
@@ -61,15 +62,6 @@ class App {
 
     const tone = document.getElementById('tone');
     tone.addEventListener('click', this.changeTone);
-
-    const curtains = document.getElementById('curtains');
-    curtains.addEventListener('click', () => {
-      curtains.classList.add('opening');
-      setTimeout(() => {
-        curtains.classList.remove('opening');
-        curtains.classList.add('open');
-      }, 1000);
-    });
   }
 
 
@@ -212,6 +204,63 @@ class App {
     if (raf) {
       loop();
     }
+  }
+
+
+
+  initIntro() {
+    const curtains = document.getElementById('curtains');
+
+    const msg1 = document.getElementById('message-1');
+    const msg2 = document.getElementById('message-2');
+    const msg3 = document.getElementById('message-3');
+
+    const btns1 = document.querySelectorAll('#message-1 .btn');
+    const btns2 = document.querySelectorAll('#message-2 .btn');
+    const btnsNo = document.querySelectorAll('.message .btn.no');
+
+    msg1.classList.add('visible');
+
+    btnsNo.forEach(btn => {
+      btn.addEventListener('mouseenter', e => {
+        let newFlexDir = 'row';
+        if (getComputedStyle(btn.parentElement).flexDirection === 'row'
+          || btn.parentElement.style.flexDirection === 'row') {
+          newFlexDir = 'row-reverse'
+        }
+        btn.parentElement.style.flexDirection = newFlexDir;
+      });
+    });
+
+    btns1.forEach(btn => {
+      btn.addEventListener('click', e => {
+        this.player.playBrouhaha();
+        msg1.classList.remove('visible');
+
+        setTimeout(() => {
+          msg2.classList.add('visible');
+        }, 1000);
+      });
+    });
+
+
+    btns2.forEach(btn => {
+      btn.addEventListener('click', e => {
+        msg2.classList.remove('visible');
+        curtains.classList.add('opening');
+
+        setTimeout(() => {
+          curtains.classList.remove('opening');
+          curtains.classList.add('open');
+          msg3.classList.add('visible');
+        }, 500);
+
+        setTimeout(() => {
+          msg3.classList.remove('visible');
+          this.player.stopBrouhaha();
+        }, 2500);
+      });
+    });
   }
 }
 

@@ -6,7 +6,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 999;
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
   background: transparent;
 
@@ -46,7 +46,7 @@
   &.open {
     cursor: default;
     pointer-events: none;
-    
+
     .left,
     .right {
       width: 0;
@@ -54,10 +54,86 @@
       transition: all 4s ease;
       transform: rotate(15deg);
     }
-    
+
     .right {
       transform: rotate(-15deg);
     }
   }
 }
 
+
+
+.message {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+    .inner {
+
+    }
+
+    color: rgb(94, 94, 94);
+    text-shadow: 0 0 2px #e0cb08;
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    animation: flicker 1s ease-in-out infinite alternate;
+    color: $white;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: all .5s ease-in-out;
+    
+    &.visible {
+      opacity: 1;
+      pointer-events: visible;
+    }
+  }
+
+  .btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .btn {
+    display: block;
+    margin: 0 15px;
+    padding: .25em .5em;
+    background: rgb(228, 228, 228);
+    border: none;
+    border-radius: .2em;
+
+    &:hover, &:focus {
+      background-color: rgb(18, 173, 18);
+      color: $white;
+    }
+  }
+
+
+$yellow: rgb(255, 230, 0);
+/* Flickering animation */
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px $yellow, 0 0 80px $yellow, 0 0 90px $yellow, 0 0 100px $yellow,
+      0 0 150px $yellow;
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
