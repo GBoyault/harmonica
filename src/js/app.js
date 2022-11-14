@@ -234,30 +234,34 @@ class App {
 
     btns1.forEach(btn => {
       btn.addEventListener('click', e => {
-        this.player.playBrouhaha();
         msg1.classList.remove('visible');
-
+        
         setTimeout(() => {
           msg2.classList.add('visible');
-        }, 1000);
+        }, 500);
       });
     });
-
-
+    
+    
     btns2.forEach(btn => {
       btn.addEventListener('click', e => {
         msg2.classList.remove('visible');
-        curtains.classList.add('opening');
+        // curtains.classList.add('opening');
+        this.player.playAudience();
 
         setTimeout(() => {
-          curtains.classList.remove('opening');
-          curtains.classList.add('open');
+          curtains.classList.add('opening');
           msg3.classList.add('visible');
         }, 500);
 
         setTimeout(() => {
+          curtains.classList.remove('opening');
+          curtains.classList.add('open');
+        }, 1000);
+
+        setTimeout(() => {
           msg3.classList.remove('visible');
-          this.player.stopBrouhaha();
+          // this.player.stopAudience();
         }, 2500);
       });
     });

@@ -8,8 +8,8 @@ export default class SoundPlayer {
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.currentNote = null;
 
-    this.brouhaha = new Audio('ne/pas/regarder/dans/ce/dossier/audio/brouhaha.mp3');
-    this.brouhaha.loop = true;
+    this.audience = new Audio('ne/pas/regarder/dans/ce/dossier/audio/audience.mp3');
+    // this.audience.loop = true;
   }
 
 
@@ -42,11 +42,11 @@ export default class SoundPlayer {
     }
   }
 
-  playBrouhaha() {
-    this.brouhaha.play();
+  playAudience() {
+    this.audience.play();
   }
   
-  stopBrouhaha() {
-    this.brouhaha.pause();
+  stopAudience() {
+    this.audience.pause();
   }
 }
