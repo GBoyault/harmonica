@@ -42,6 +42,11 @@ export default class KeysManager {
     ]
   }
 
+  /**
+   * 
+   * @param {Object} event 
+   * @returns {Object}
+   */
   keyEvent(event) {
     const index = this.keys.findIndex(k => k.key === event.key);
     let lastPressed = null;
@@ -55,6 +60,7 @@ export default class KeysManager {
     }
 
     const keysPressed = this.keys.filter(k => k.pressed);
+    
     return {
       keysPressed: keysPressed.map(k => k.key),
       airState: this.computeAirState(keysPressed.map(k => k.fn), lastPressed)
@@ -63,6 +69,12 @@ export default class KeysManager {
 
 
 
+  /**
+   * 
+   * @param {Array} keys 
+   * @param {boolean} lastPressed 
+   * @returns {string}
+   */
   computeAirState(keys, lastPressed) {
     let air = '-';
     if (keys.includes('blow')) {

@@ -19,6 +19,7 @@ export default class Note {
     this.play();
   }
 
+  
   initGains() {
     this.gain1 = this.ctx.createGain();
     this.gain1.gain.value = 0;
@@ -100,5 +101,4 @@ export default class Note {
     this.mod2.stop(now + this.releaseTime);
     this.mod3.stop(now + this.releaseTime);
   }
-
 }

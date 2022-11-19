@@ -12,27 +12,6 @@
 html {
 	font-size: 62.5%;
 	overflow-x: hidden;
-	// cursor: none;
-
-	&::-webkit-scrollbar {
-		width: 11px;
-	}
-	scrollbar-width: thin;
-	scrollbar-color: $white transparent;
-	&::-webkit-scrollbar-track {
-		background: $black;
-	}
-	&::-webkit-scrollbar-thumb {
-		// background-color: $white;
-		background-color: $white;
-		height: 25px;
-		position: relative;
-		z-index: 99;
-	}
-
-	&.no-scroll {
-		overflow: hidden;
-	}
 }
 
 body {
@@ -41,6 +20,6 @@ body {
 	color: $black;
 	background-color: $color-back;
 	line-height: 1.5;
-	cursor: none;
+	// cursor: none;
 }
 

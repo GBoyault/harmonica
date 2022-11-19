@@ -68,6 +68,7 @@
 .scene {
   flex-grow: 1;
   position: relative;
+  cursor: none;
 
   .background {
     position: absolute;
@@ -76,5 +77,35 @@
     height: 100%;
     object-fit: cover;
     filter: blur(3px);
+  }
+}
+
+
+.responsive-shutter {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  
+  // display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  
+  background-color: rgb(47, 59, 168);
+  color: rgb(224, 36, 215);
+  font-family: monospace;
+  text-align: center;
+  font-size: 3.5rem;
+
+  display: none;
+
+  @media (max-height: $break-sm), (max-width: $break-md) {
+    display: flex;
+  }
+
+  em {
+    color: yellow;
   }
 }

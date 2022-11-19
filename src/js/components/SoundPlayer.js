@@ -5,11 +5,12 @@ import Note from './Note';
 export default class SoundPlayer {
   constructor() {
     this.playing = false;
+
+    // Main audio context
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.currentNote = null;
 
     this.audience = new Audio('ne/pas/regarder/dans/ce/dossier/audio/audience.mp3');
-    // this.audience.loop = true;
   }
 
 

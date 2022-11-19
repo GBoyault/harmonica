@@ -19,13 +19,14 @@ class App {
     this.mouth = document.querySelector('#mouth .hole');
     this.holes = document.querySelectorAll('#harmonica .hole');
 
-    // Computed values
+    // Params for mouth / harmonica collisions
     this.mouthRect = this.mouth.getBoundingClientRect();
     this.harmoCenterX = 240;
     this.harmoCenterY = 20;
     this.toleranceX = 5;
     this.toleranceY = 20;
 
+    // Params for stats
     this.currentHole = 0;
     this.currentTuning = 'richter'; // richter | paddy
     this.currentTone = 'C'; // C, C#, D etc
@@ -33,6 +34,7 @@ class App {
     this.currentNoteCode = 0;
     this.currentAirState = '-';
 
+    // Bind methods to class 'this'
     this.handleMouse = this.handleMouse.bind(this);
     this.handleKeys = this.handleKeys.bind(this);
     this.changeTuning = this.changeTuning.bind(this);
@@ -40,6 +42,8 @@ class App {
 
     this.initIntro();
     this.initEventListeners();
+
+    // First update stats
     this.stats.updateTuning(this.currentTuning);
     this.stats.updateTone(this.currentTone);
 
