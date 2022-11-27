@@ -22,9 +22,9 @@ const paths = {
     img: 'src/img',
   },
   dest: {
-    style: 'ne/pas/regarder/dans/ce/dossier/css',
-    js: 'ne/pas/regarder/dans/ce/dossier/js',
-    img: 'ne/pas/regarder/dans/ce/dossier/img',
+    style: 'dist/css',
+    js: 'dist/js',
+    img: 'dist/img',
   }
 };
 
@@ -81,7 +81,7 @@ export const copy = () => {
     'src/**/*',
     '!src/{img,js,scss}',
     '!src/{img,js,scss}/**/*'])
-    .pipe(dest('ne/pas/regarder/dans/ce/dossier'));
+    .pipe(dest('dist'));
 }
 
 export const watchForChange = () => {
@@ -96,7 +96,7 @@ export const watchForChange = () => {
   watch('index.html', reload);
 };
 
-export const clean = () => del(['ne/pas/regarder/dans/ce/dossier']);
+export const clean = () => del(['dist']);
 
 const server = browserSync.create();
 export const serve = done => {

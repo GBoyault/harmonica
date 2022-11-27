@@ -7,10 +7,14 @@ export default class SoundPlayer {
     this.playing = false;
 
     // Main audio context
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.ctx = null; // initialized after first user click
     this.currentNote = null;
 
-    this.audience = new Audio('ne/pas/regarder/dans/ce/dossier/audio/audience.mp3');
+    this.audience = new Audio('dist/audio/audience.mp3');
+  }
+
+  init() {
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
   }
 
 

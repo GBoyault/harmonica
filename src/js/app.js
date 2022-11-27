@@ -243,6 +243,9 @@ class App {
 
     btns1.forEach(btn => {
       btn.addEventListener('click', e => {
+        // Init audio context
+        this.player.init();
+        
         msg1.classList.remove('visible');
 
         setTimeout(() => {
