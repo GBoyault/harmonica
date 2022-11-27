@@ -81,7 +81,7 @@
 }
 
 
-.responsive-shutter {
+.responsive-shutter, .no-js-shutter {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -99,13 +99,21 @@
   text-align: center;
   font-size: 3.5rem;
 
-  display: none;
-
-  @media (max-height: $break-sm), (max-width: $break-md) {
-    display: flex;
-  }
-
   em {
     color: yellow;
   }
+}
+
+.responsive-shutter {
+  display: none;
+  @media (max-height: $break-sm), (max-width: $break-md) {
+    display: flex;
+  }
+}
+
+.no-js-shutter {
+  display: flex;
+  background-color: rgb(47, 168, 67);
+  color: rgb(255, 255, 255);
+
 }
