@@ -70,8 +70,13 @@ class App {
 
 
   changeTuning() {
-    this.currentTuning = 'richter' === this.currentTuning
-      ? 'paddy' : 'richter';
+    if ('richter' === this.currentTuning) {
+      this.currentTuning = 'paddy';
+    } else if ('paddy' === this.currentTuning) {
+      this.currentTuning = 'morti';
+    } else {
+      this.currentTuning = 'richter';
+    }
 
     this.stats.updateTuning(this.currentTuning);
   }
@@ -239,14 +244,14 @@ class App {
     btns1.forEach(btn => {
       btn.addEventListener('click', e => {
         msg1.classList.remove('visible');
-        
+
         setTimeout(() => {
           msg2.classList.add('visible');
         }, 500);
       });
     });
-    
-    
+
+
     btns2.forEach(btn => {
       btn.addEventListener('click', e => {
         msg2.classList.remove('visible');
