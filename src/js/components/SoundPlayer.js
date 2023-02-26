@@ -14,7 +14,9 @@ export default class SoundPlayer {
   }
 
   init() {
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
   }
 
 

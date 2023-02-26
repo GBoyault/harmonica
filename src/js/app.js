@@ -40,7 +40,8 @@ class App {
     this.changeTuning = this.changeTuning.bind(this);
     this.changeTone = this.changeTone.bind(this);
 
-    this.initIntro();
+    this.initIntroPro();
+    this.initIntroMorti();
     this.initEventListeners();
 
     // First update stats
@@ -216,9 +217,36 @@ class App {
   }
 
 
+  initIntroPro() {
+    const about = document.getElementById('about');
+    const aboutBtn = document.getElementById('btn-about');
 
-  initIntro() {
+    if (about.classList.contains('deactivated')) {
+      return;
+    }
+
+    const btn = document.querySelector('#about .play');
+
+    btn.addEventListener('click', e => {
+      about.classList.add('hidden');
+      aboutBtn.classList.add('visible');
+      this.player.init();
+    });
+
+    aboutBtn.addEventListener('click', e => {
+      about.classList.remove('hidden');
+      aboutBtn.classList.remove('visible');
+    });
+  }
+
+
+
+  initIntroMorti() {
     const curtains = document.getElementById('curtains');
+
+    if (curtains.classList.contains('deactivated')) {
+      return;
+    }
 
     const msg1 = document.getElementById('message-1');
     const msg2 = document.getElementById('message-2');
@@ -245,7 +273,7 @@ class App {
       btn.addEventListener('click', e => {
         // Init audio context
         this.player.init();
-        
+
         msg1.classList.remove('visible');
 
         setTimeout(() => {

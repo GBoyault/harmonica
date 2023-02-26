@@ -4,7 +4,7 @@
   font-family: monospace;
   width: 100%;
   color: $white;
-  border-top: 1px solid rgba($white, 0.35);
+  // border-top: 1px solid rgba($white, 0.35);
   padding-top: 15px;
   font-size: 1.4rem;
   position: relative;
@@ -19,17 +19,46 @@
       &--clickable {
         cursor: pointer;
 
-        // &:hover {
-          text-decoration: underline;
-        // }
+        text-decoration: underline;
+        &:hover {
+          color: #b2a6d3;
+        }
       }
-      
+
       &::before {
         content: ":";
         margin-right: 4px;
-        display:inline-block;
+        display: inline-block;
         text-decoration: none !important;
       }
     }
   }
+
+  hr {
+    margin: 15px 0;
+    background-color: rgba($white, 0.35);
+  }
+
+  #btn-about {
+    font-family: monospace;
+    width: max-content;
+    display: block;
+    background-color: transparent;
+    border: none;
+    color: $white;
+    font-size: 1.25em;
+    text-transform: lowercase;
+    text-decoration: underline;
+    visibility: hidden;
+
+    &:hover {
+      color: #b2a6d3;
+      text-decoration: none;
+    }
+
+    &.visible {
+      visibility: visible;
+    }
+  }
+
 }

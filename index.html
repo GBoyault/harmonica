@@ -8,9 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="dist/img/favicon.png" />
   <link rel="stylesheet" href="dist/css/app.css">
   <title> ** SUPER BLUES HARP SIMULATOR 2022 **</title>
-  <meta name="robots" content="noindex">
-  <meta name="googlebot" content="noindex">
-  <meta name="description" content="Un super simulateur d'harmonica, incluant trois accordages et douze tonalités !"> 
+  <meta name="description" content="Un super simulateur d'harmonica en synthèse FM incluant trois accordages et douze tonalités ! Réalisé avec l'API Web Audio en JavaScript.">
 </head>
 
 <body>
@@ -51,8 +49,9 @@
             class="result">draw + bend*3</span>
         </div>
       </div>
-
       <div id="stats">
+        <button id="btn-about">About</button>
+        <hr>
         <div class="stat"><span class="label">keys</span><span class="value" id="keys">-</span></div>
         <div class="stat"><span class="label">hole</span><span class="value" id="hole">-</span></div>
         <div class="stat"><span class="label">air</span><span class="value" id="air">-</span></div>
@@ -106,7 +105,7 @@
       </div>
     </main>
 
-    <div id="curtains">
+    <div id="curtains" class="deactivated">
       <div class="left"></div>
       <div class="right"></div>
 
@@ -136,6 +135,24 @@
         </div>
       </div>
     </div>
+    <div id="about">
+      <p class="first-instructions">
+        Déplacez l'harmonica sur la bouche avec la souris,
+        <br />soufflez et aspirez avec les touches du clavier :
+        <br /><strong>R</strong> pour souffler, <strong>F</strong> pour aspirer.
+      </p>
+      <p>La tonalité et l'accordage de base peuvent être modifiés depuis la barre latérale.</p>
+      <p>Le son de l'harmonica est réalisé en JavaScript avec <a
+          href="https://developer.mozilla.org/fr/docs/Web/API/Web_Audio_API" target="_blank">l'API Web Audio</a>,
+        <br />sur le principe de la <a href="https://fr.wikipedia.org/wiki/Synth%C3%A8se_FM" target="_blank">synthèse
+          FM</a> : le son est composé de 3 fréquences,
+        <br />produites par de soscillateurs qui se modulent l'un et l'autre
+      </p>
+      <p>Conception & réalisation : <a href="https://gabrielboyault.com">Gabriel Boyault</a></p>
+      <div class="btns">
+        <button class="btn play">Jouer de l'harmonica !</button>
+      </div>
+    </div>
   </div>
   <div class="responsive-shutter">
     <div class="inner">
@@ -149,7 +166,7 @@
       <div class="inner">
         ce site a besoin de <em>javacript</em> pour fonctionner.
         <br><br>
-        mais il n'intègre ni cookies ni trackers.
+        mais il n'intègre ni cookie ni tracker.
       </div>
     </div>
   </noscript>
