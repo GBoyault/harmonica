@@ -16,6 +16,7 @@ export default class SoundPlayer {
   init() {
     if (!this.ctx) {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.ctx.resume();
     }
   }
 
