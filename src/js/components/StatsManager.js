@@ -4,7 +4,6 @@ import { f } from './tunings';
 
 export default class StatsManager {
   constructor() {
-
     this.keys = document.getElementById('keys');
     this.hole = document.getElementById('hole');
     this.air = document.getElementById('air');
@@ -32,21 +31,23 @@ export default class StatsManager {
     for (const [note, frequencies] of Object.entries(f)) {
       const index = frequencies.findIndex(fr => fr === freq);
 
-      if (-1 !== index) {
-        // playedNote = note + index;
-        playedNote = note;
+      if (-1 === index) {
+        continue;
+      }
 
-        if (transpostion) {
-          const noteIndex = Object.keys(f).findIndex(n => n === note);
-          let transposedIndex = noteIndex + transpostion;
-          if (transposedIndex > 11) {
-            transposedIndex -= 12;
-          } else if (transposedIndex < 0) {
-            transposedIndex += 12;
-          }
+      playedNote = note;
 
-          playedNote = Object.keys(f)[transposedIndex];
+      if (transpostion) {
+        const noteIndex = Object.keys(f).findIndex(n => n === note);
+        let transposedIndex = noteIndex + transpostion;
+        
+        if (transposedIndex > 11) {
+          transposedIndex -= 12;
+        } else if (transposedIndex < 0) {
+          transposedIndex += 12;
         }
+
+        playedNote = Object.keys(f)[transposedIndex];
       }
     }
 

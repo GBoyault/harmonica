@@ -3,23 +3,22 @@
 import { octave, semitone } from './utils';
 
 export default class Note {
+  attackTime = 0.055;
+  releaseTime = 0.1;
+  maxGain1 = 500;
+  maxGain2 = 1500;
+
   constructor(ctx, freq) {
 
     this.ctx = ctx;
     this.out = this.ctx.destination;
-
-    this.attackTime = 0.055;
-    this.releaseTime = 0.1;
-
-    this.maxGain1 = 500;
-    this.maxGain2 = 1500;
 
     this.initGains();
     this.initOscillators(freq);
     this.play();
   }
 
-  
+
   initGains() {
     this.gain1 = this.ctx.createGain();
     this.gain1.gain.value = 0;
@@ -70,7 +69,7 @@ export default class Note {
   play() {
     const now = this.ctx.currentTime;
 
-    this.env.gain.setValueAtTime(0, now); 
+    this.env.gain.setValueAtTime(0, now);
     this.env.gain.linearRampToValueAtTime(1, now + this.attackTime);
 
     this.gain1.gain.setValueAtTime(0, now);
@@ -88,13 +87,13 @@ export default class Note {
   stop() {
     const now = this.ctx.currentTime;
 
-    this.gain1.gain.setValueAtTime(this.maxGain1, now); 
+    this.gain1.gain.setValueAtTime(this.maxGain1, now);
     this.gain1.gain.linearRampToValueAtTime(0, now + this.releaseTime);
 
-    this.gain2.gain.setValueAtTime(this.maxGain2, now); 
+    this.gain2.gain.setValueAtTime(this.maxGain2, now);
     this.gain2.gain.linearRampToValueAtTime(0, now + this.releaseTime);
 
-    this.env.gain.setValueAtTime(1, now); 
+    this.env.gain.setValueAtTime(1, now);
     this.env.gain.linearRampToValueAtTime(0, now + this.releaseTime);
 
     this.mod1.stop(now + this.releaseTime);

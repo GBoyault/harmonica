@@ -10,12 +10,12 @@ import autoprefixer from 'autoprefixer';
 import del from 'del';
 import webpack from 'webpack-stream';
 import browserSync from 'browser-sync';
-// import replace from "gulp-replace";
 import named from 'vinyl-named';
 
 
 const PRODUCTION = yargs.argv.prod;
 const paths = {
+  proxy: 'http://localhost/harmonica',
   src: {
     style: 'src/scss',
     js: 'src/js',
@@ -101,7 +101,7 @@ export const clean = () => del(['dist']);
 const server = browserSync.create();
 export const serve = done => {
   server.init({
-    proxy: "http://localhost/harmonica"
+    proxy: paths.proxy
   });
   done();
 };

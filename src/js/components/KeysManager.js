@@ -44,7 +44,7 @@ export default class KeysManager {
 
   /**
    * 
-   * @param {Object} event 
+   * @param {keyEvent} event 
    * @returns {Object}
    */
   keyEvent(event) {
