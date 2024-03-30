@@ -1,0 +1,123 @@
+// _layout.scss
+
+.main-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: rgb(56, 56, 56);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  padding: 15px;
+  color: $white;
+}
+
+.heading {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 2.2rem;
+  font-style: italic;
+  line-height: 1.2;
+
+  $offset: 10px;
+
+  em {
+    color: #b2a6d3;
+  }
+
+  .word {
+    display: block;
+    position: relative;
+
+    &-1 {
+      left: $offset;
+    }
+    &-2 {
+      left: calc(#{$offset} * 2);
+    }
+    &-3 {
+      left: calc(#{$offset} * 3);
+    }
+    &-4 {
+      left: calc(#{$offset} * 4);
+    }
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 40%;
+    background-color: $white;
+  }
+
+  &::before {
+    margin-bottom: 10px;
+  }
+
+  &::after {
+    margin-left: calc(#{$offset} * 5);
+    margin-top: 10px;
+  }
+}
+
+.scene {
+  flex-grow: 1;
+  position: relative;
+  cursor: none;
+
+  .background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px);
+  }
+}
+
+
+.responsive-shutter, .no-js-shutter {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  
+  // display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  
+  background-color: rgb(47, 59, 168);
+  color: rgb(224, 36, 215);
+  font-family: monospace;
+  text-align: center;
+  font-size: 3.5rem;
+
+  em {
+    color: yellow;
+  }
+}
+
+.responsive-shutter {
+  display: none;
+  @media (max-height: $break-sm), (max-width: $break-md) {
+    display: flex;
+  }
+}
+
+.no-js-shutter {
+  display: flex;
+  background-color: rgb(47, 168, 67);
+  color: rgb(255, 255, 255);
+
+}

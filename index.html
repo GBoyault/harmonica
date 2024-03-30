@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> ** SUPER BLUES HARP SIMULATOR 2022 **</title>
+  <meta name="description"
+    content="Un super simulateur d'harmonica en synthèse FM incluant trois accordages et douze tonalités ! Réalisé avec l'API Web Audio en JavaScript.">
+</head>
+
+<body>
+  <div class="main-wrapper" id="main-wrapper">
+    <sidebar class="sidebar">
+      <div class="heading">
+        <h1>
+          <span class="word word-1">Supe<em>r</em></span>
+          <span class="word word-2">Blues H<em>a</em>rp</span>
+          <span class="word word-3">s<em>i</em><em>m</em>ula<em>t</em><em>o</em>r</span>
+          <span class="word word-4">2022</span>
+        </h1>
+      </div>
+
+      <div class="instructions">
+        <div class="instruction">
+          <span class="key">R</span> <span class="result">blow</span>
+        </div>
+        <div class="instruction">
+          <span class="key">E</span><span class="key">R</span> <span class="result">blow + bend</span>
+        </div>
+        <div class="instruction">
+          <span class="key">Z</span><span class="key">E</span><span class="key">R</span> <span class="result">blow +
+            bend*2</span>
+        </div>
+        <div class="instruction instruction--mt">
+          <span class="key">F</span> <span class="result">draw</span>
+        </div>
+        <div class="instruction">
+          <span class="key">D</span><span class="key">F</span> <span class="result">draw + bend</span>
+        </div>
+        <div class="instruction">
+          <span class="key">S</span><span class="key">D</span><span class="key">F</span> <span class="result">draw +
+            bend*2</span>
+        </div>
+        <div class="instruction">
+          <span class="key">Q</span><span class="key">S</span><span class="key">D</span><span class="key">F</span> <span
+            class="result">draw + bend*3</span>
+        </div>
+      </div>
+      <div id="stats">
+        <button id="btn-about">About</button>
+        <hr>
+        <div class="stat"><span class="label">keys</span><span class="value" id="keys">-</span></div>
+        <div class="stat"><span class="label">hole</span><span class="value" id="hole">-</span></div>
+        <div class="stat"><span class="label">air</span><span class="value" id="air">-</span></div>
+        <div class="stat"><span class="label">note</span><span class="value" id="note">-</span></div>
+        <div class="stat"><span class="label">freq</span><span class="value" id="freq">-</span></div>
+        <div class="stat"><span class="label">tuning</span><span class="value value--clickable" id="tone"
+            title="Modifier la tonalité">-</span> <span class="value--clickable" id="tuning"
+            title="Modifier l'accord">-</span></div>
+      </div>
+    </sidebar>
+
+    <main class="scene">
+      <img src="/background.jpg" alt="" class="background">
+      <div id="harmonica">
+        <div class="inner">
+          <div class="hole" data-hole="1">
+            <div class="nb">1</div>
+          </div>
+          <div class="hole" data-hole="2">
+            <div class="nb">2</div>
+          </div>
+          <div class="hole" data-hole="3">
+            <div class="nb">3</div>
+          </div>
+          <div class="hole" data-hole="4">
+            <div class="nb">4</div>
+          </div>
+          <div class="hole" data-hole="5">
+            <div class="nb">5</div>
+          </div>
+          <div class="hole" data-hole="6">
+            <div class="nb">6</div>
+          </div>
+          <div class="hole" data-hole="7">
+            <div class="nb">7</div>
+          </div>
+          <div class="hole" data-hole="8">
+            <div class="nb">8</div>
+          </div>
+          <div class="hole" data-hole="9">
+            <div class="nb">9</div>
+          </div>
+          <div class="hole" data-hole="10">
+            <div class="nb">10</div>
+          </div>
+        </div>
+      </div>
+      <div id="mouth">
+        <div class="hole"></div>
+      </div>
+    </main>
+    <div id="about">
+      <p class="first-instructions">
+        Déplacez l'harmonica sur la bouche avec la souris,
+        <br />soufflez et aspirez avec les touches du clavier :
+        <br /><strong>R</strong> pour souffler, <strong>F</strong> pour aspirer.
+      </p>
+      <p>La tonalité et l'accordage de base peuvent être modifiés depuis la barre latérale.</p>
+      <p>Le son de l'harmonica est réalisé en JavaScript avec <a
+          href="https://developer.mozilla.org/fr/docs/Web/API/Web_Audio_API" target="_blank">l'API Web Audio</a>,
+        <br />sur le principe de la <a href="https://fr.wikipedia.org/wiki/Synth%C3%A8se_FM" target="_blank">synthèse
+          FM</a> : le son est composé de 3 fréquences,
+        <br />produites par des oscillateurs qui se modulent l'un et l'autre
+      </p>
+      <p>Conception & réalisation : <a href="https://www.gabrielboyault.com/">Gabriel Boyault</a>
+        <br />Code source : <a href="https://github.com/GBoyault/harmonica/" target="_blank">Github</a>
+      </p>
+      <p>Pour Julien Mortimer, cadeau.</p>
+      <div class="btns">
+        <button class="btn play">Jouer de l'harmonica !</button>
+      </div>
+    </div>
+    <div class="responsive-shutter">
+      <div class="inner">
+        oula, ce smartphone est trop <em>petit</em> !
+        <br><br>
+        regarde donc ça sur un écran plus large, d'accord ?
+      </div>
+    </div>
+    <noscript>
+      <div class="no-js-shutter">
+        <div class="inner">
+          ce site a besoin de <em>javacript</em> pour fonctionner.
+          <br><br>
+          mais il n'intègre ni cookie ni tracker.
+        </div>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

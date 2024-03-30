@@ -1,0 +1,41 @@
+// _mouth.scss
+
+#mouth {
+  $width: 180px;
+  $height: 60px;
+
+  height: $height;
+  width: $width;
+  position: fixed;
+  z-index: 10;
+  top: calc(50vh - #{$height});
+  left: calc(50vw - #{$width} + #{$sidebar-width});
+
+  border: 3px solid rgb(168, 80, 80);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.2);
+  transition: all 0.1s ease;
+
+  .blow &,
+  .draw & {
+    height: calc(#{$height} - 10px);
+    top: calc(50vh - #{$height} + 5px);
+  }
+
+  .hole {
+    width: 45px;
+    height: 45px;
+    border: 2px solid rgb(168, 80, 80);
+    border-radius: 50%;
+
+    .blow & {
+      background-color: rgba($color: #af6c15, $alpha: 0.4);
+    }
+    .draw & {
+      background-color: rgba($color: #3079be, $alpha: 0.4);
+    }
+  }
+}

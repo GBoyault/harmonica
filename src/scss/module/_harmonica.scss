@@ -1,0 +1,73 @@
+// _harmonica.scss
+
+#harmonica {
+  border-top: 2px solid rgb(182, 165, 69);
+  border-bottom: 2px solid rgb(182, 165, 69);
+  width: 480px;
+  background-color: rgb(228, 228, 228);
+  
+  position: fixed;
+  top: 25%;
+  left: 10%;
+
+  .inner {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      left: 5%;
+      position: absolute;
+      width: 90%;
+      height: 20px;
+      border-radius: 20px;
+    }
+
+    &::before {
+      bottom: calc(100% + 2px);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: linear-gradient(90deg, rgb(126, 126, 126) 0%, rgb(165, 165, 165) 100%);
+    }
+    &::after {
+      top: calc(100% + 2px);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      background: linear-gradient(90deg, rgb(165, 165, 165) 0%, rgb(126, 126, 126) 100%);
+    }
+  }
+
+  .hole {
+    width: 25px;
+    height: 35px;
+
+    background-color: grey;
+    position: relative;
+    transition: all 0.1s ease;
+    
+    .nb {
+      position: absolute;
+      bottom: calc(100% + 3px);
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+      color: rgb(94, 94, 94);
+    }
+
+    &.contact {
+      filter: brightness(1.25);
+
+      .blow & {
+        background-color: rgb(160, 49, 49);
+      }
+      .draw & {
+        background-color: rgb(76, 76, 180);
+      }
+    }
+  }
+}

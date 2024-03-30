@@ -1,0 +1,43 @@
+// _ mixins.scss
+
+@use "sass:math";
+
+// Small devices
+@mixin sm {
+   @media (max-width: #{$break-sm}) {
+       @content;
+   }
+}
+
+// Medium devices
+@mixin md {
+   @media (max-width: #{$break-md}) {
+       @content;
+   }
+}
+
+// Large devices
+@mixin lg {
+   @media (max-width: #{$break-lg}) {
+       @content;
+   }
+}
+
+// Extra large devices
+@mixin xl {
+   @media (max-width: #{$break-xl}) {
+       @content;
+   }
+}
+
+// Custom devices
+@mixin rwd($screen) {
+   @media (max-width: $screen+'px' ) {
+      @content;
+   }
+}
+
+// converts points to pixels
+@function pts($pts) {
+   @return round($pts * 1.15) + 0px;
+}

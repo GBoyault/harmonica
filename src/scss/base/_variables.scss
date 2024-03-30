@@ -1,0 +1,25 @@
+// _variables.scss
+
+$white: #fff;
+$black: #000;
+
+$lightgrey: rgb(235, 235, 235);
+$grey: rgb(185, 185, 185);
+
+// $color-back: #b397f5;
+$color-back: #303030;
+
+// Bootsrtap breaks
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+
+// z-indexes
+$z-index-menu: 210;
+$z-index-menu-mobile: 205;
+$z-index-header: 210;
+$z-index-cta: 90;
+$z-index-map: 80;
+
+$sidebar-width: 220px
